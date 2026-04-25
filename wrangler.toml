@@ -1,0 +1,7 @@
+name = "oormail-services"
+main = "src/index.js"
+compatibility_date = "2024-04-05"
+
+# This allows your worker to be accessed by your website
+[observability]
+enabled = true
