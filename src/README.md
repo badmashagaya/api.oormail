@@ -19,3 +19,7 @@ For Netflix Household
 
 curl -X GET "https://oormail-services.by-oor.workers.dev/household?mail=netflixhouseholdtest@sharklasers.com" \
      -H "x-api-key: OTTONTENT"
+
+
+
+API URL ->>> api-oormail.waliasamarth2020.workers.dev
