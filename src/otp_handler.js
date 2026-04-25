@@ -340,7 +340,7 @@ function unescapeHtml(str) {
 }
 
 function extractNetflixHouseholdCode(htmlContent) {
-  // 1. JSON Data Extraction (Perfectly matches your www_netflix_com_source.html)
+  // 1. JSON Data Extraction (www_netflix_com_source.html)
   const jsonMatch = htmlContent.match(/"challengeOtp"\s*:\s*\{[^}]*"value"\s*:\s*"(\d{4,6})"/);
   if (jsonMatch) return jsonMatch[1];
 
