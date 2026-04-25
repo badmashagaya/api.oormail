@@ -1,7 +1,7 @@
 // --- CONFIGURATION & SECURITY ---
 const BASE_URL = "https://api.guerrillamail.com/ajax.php";
 const USER_AGENT = "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36";
-const MASTER_API_KEY = "OTTONTENT"; 
+const MASTER_API_KEY = "OTTONRENT"; 
 
 // --- IN-MEMORY QUEUE MANAGER ---
 const emailQueues = new Map();
