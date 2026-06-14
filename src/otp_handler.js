@@ -182,7 +182,8 @@ async function processNetflix(url, isHousehold = false) {
         rawBody = rawBody.replace(/=\r?\n/g, '').replace(/=3D/g, '=').replace(/&amp;/g, '&');
         
         // 2. DEEP VERIFICATION: Find the unique travel link directly
-        const linkMatch = rawBody.match(/https:\/\/(?:www\.)?netflix\.com\/account\/travel\/verify[^\s"'><]+/i);
+        const linkMatch = rawBody.match(/https:\/\/(?:www\.)?netflix\.com\/account\/travel\/verify[^\s"'><\]\[]+/i);
+        
 
         if (linkMatch) {
           const travelUrl = linkMatch[0];
