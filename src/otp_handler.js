@@ -180,9 +180,10 @@ async function processNetflix(url, isHousehold = false) {
         
         // Clean quoted-printable artifacts to reveal the true text
         rawBody = rawBody.replace(/=\r?\n/g, '').replace(/=3D/g, '=').replace(/&amp;/g, '&');
-        
-        // 2. DEEP VERIFICATION: Find the unique travel link directly
+
+        // DEEP VERIFICATION: Find the unique travel link directly, avoiding trailing brackets
         const linkMatch = rawBody.match(/https:\/\/(?:www\.)?netflix\.com\/account\/travel\/verify[^\s"'><\]\[]+/i);
+
         
 
         if (linkMatch) {
@@ -341,20 +342,26 @@ function unescapeHtml(str) {
 }
 
 function extractNetflixHouseholdCode(htmlContent) {
-  // 1. JSON Data Extraction (www_netflix_com_source.html)
-  const jsonMatch = htmlContent.match(/"challengeOtp"\s*:\s*\{[^}]*"value"\s*:\s*"(\d{4,6})"/);
+  // 1. JSON Data Extraction (Highest accuracy - targets the raw Netflix challengeOtp value)
+  const jsonMatch = htmlContent.match(/"challengeOtp"\s*:\s*\{\s*"value"\s*:\s*"(\d{4,6})"/i);
   if (jsonMatch) return jsonMatch[1];
 
   // 2. Fallback HTML Element Extraction
-  const divMatch = htmlContent.match(/data-uia="travel-verification-otp"[^>]*>\s*(\d{4,6})\s*</);
+  const divMatch = htmlContent.match(/data-uia="travel-verification-otp"[^>]*>\s*(\d{4,6})\s*</i);
   if (divMatch) return divMatch[1];
   
   // 3. Ultra-Fallback Class Extraction
-  const classMatch = htmlContent.match(/class="[^"]*challenge-code[^"]*"[^>]*>\s*(\d{4,6})\s*</);
+  const classMatch = htmlContent.match(/class="[^"]*challenge-code[^"]*"[^>]*>\s*(\d{4,6})\s*</i);
   if (classMatch) return classMatch[1];
+
+  // 4. Broad Text Fallback (In case the DOM structure changes drastically)
+  const textOnly = htmlContent.replace(/<[^>]+>/g, ' ').replace(/\s+/g, ' ');
+  const broadMatch = textOnly.match(/(?:code|otp)[\s\S]{0,30}?(\d{4})(?!\d)/i);
+  if (broadMatch) return broadMatch[1];
 
   return null;
 }
+
 
 function extractNetflixBody(htmlContent) {
   const cleanHtml = unescapeHtml(htmlContent || "");
